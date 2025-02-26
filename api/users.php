@@ -7,9 +7,9 @@ header('Content-Type: application/json');
 
 // Sample user data
 $users = [
-    ['id' => 1, 'name' => 'John Doe', 'description' => 'Goober'],
-    ['id' => 2, 'name' => 'Jane Smith', 'description' => 'Funny']
+    ['id' => 1, 'goals' => ["to toot", "to fart", "to tooty"], 'date' => date("l")],
+    ['id' => 2, 'goals' => ['Jane Smith'], 'date' => date("l")]
 ];
 
-// Return the user data as JSON
+// Return the user data as JSON;
 echo json_encode($users);
