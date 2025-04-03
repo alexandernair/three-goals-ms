@@ -1,7 +1,7 @@
 
 <?php
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST");
+header("Access-Control-Allow-Methods: GET, POST, DELETE");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
 
@@ -34,5 +34,19 @@ if ($method === "GET") {
         $stmt->execute([$data["habit_id"], $data["date"], $data["completed"]]);
         echo json_encode(["message" => "Progress updated!"]);
     }
+}else if ($_SERVER["REQUEST_METHOD"] === "DELETE") {
+
+    $pdo = new PDO('sqlite:../Data/my_database.db');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $input = json_decode(file_get_contents("php://input"), true);
+    if (!isset($input["habitId"])) {
+        echo json_encode(["error" => "Missing habit ID"]);
+        exit;
+    }
+    $stmt = $pdo->prepare("DELETE FROM habits WHERE id = :id");
+    $stmt->execute(["id" => $input["habitId"]]);
+
+    echo json_encode(["success" => true]);
+    exit;
 }
 ?>
